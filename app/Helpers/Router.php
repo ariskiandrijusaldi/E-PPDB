@@ -26,7 +26,7 @@ class Router {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         
         // Remove base path
-        $basePath = '/zonasi/public';
+        $basePath = defined('BASE_PATH') ? BASE_PATH : '/zonasi/public';
         if (strpos($uri, $basePath) === 0) {
             $uri = substr($uri, strlen($basePath));
         }

@@ -82,7 +82,20 @@
                 </div>
             </div>
 
-            <form action="<?php echo url('/daftar/mutasi'); ?>" method="POST" enctype="multipart/form-data">
+            <!-- Error Message -->
+            <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show rounded-4 mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i><strong>Kesalahan!</strong> <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php endif; ?>
+
+            <div id="js-error" class="alert alert-danger rounded-4 mb-4 d-none" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i><strong>Perhatian!</strong> <span id="js-error-msg"></span>
+            </div>
+
+            <form action="<?php echo url('/daftar/mutasi'); ?>" method="POST" enctype="multipart/form-data" id="pendaftaranForm">
+
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="jalur" value="mutasi">
                 
@@ -112,7 +125,14 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Tanggal Lahir <span class="text-danger">*</span></label>
-                            <input type="date" name="tanggal_lahir" class="form-control" required>
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required onchange="checkAge()">
+                            <div id="ageWarning" class="alert alert-warning mt-2 py-2 px-3 small d-none">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <span id="ageWarningText"></span>
+                            </div>
+                            <div id="ageInfo" class="text-muted small mt-1 d-none">
+                                <i class="bi bi-info-circle me-1"></i> Usia: <strong id="ageDisplay"></strong>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Jenis Kelamin <span class="text-danger">*</span></label>
@@ -121,6 +141,14 @@
                                 <option value="L">Laki-laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">No. Kartu Keluarga <span class="text-danger">*</span></label>
+                            <input type="text" name="no_kk" class="form-control" maxlength="16" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Tanggal Terbit KK <span class="text-danger">*</span></label>
+                            <input type="date" name="tgl_kk" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">No. HP Siswa</label>
@@ -306,6 +334,12 @@
                             <small class="text-muted">Format: PDF, JPG, PNG (Max 2MB)</small>
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label fw-semibold">Surat Keterangan Domisili</label>
+                            <input type="file" name="file_domisili" class="form-control" accept=".pdf,.jpg,.png">
+                            <small class="text-muted">Wajib jika KK belum 1 tahun</small>
+                        </div>
+
+                        <div class="col-md-6">
                             <label class="form-label fw-semibold">Akta Kelahiran <span class="text-danger">*</span></label>
                             <input type="file" name="file_akta" class="form-control" accept=".pdf,.jpg,.png" required>
                         </div>
@@ -394,6 +428,100 @@ document.querySelectorAll('.school-card').forEach(card => {
         this.classList.add('selected');
     });
 });
+
+document.getElementById('pendaftaranForm').addEventListener('submit', function(e) {
+    const maxUmur = <?php echo get_setting('max_umur', 15); ?>;
+    const tglLahir = new Date(document.getElementsByName('tanggal_lahir')[0].value);
+    const targetDate = new Date('2026-07-01'); // Dihitung per 1 Juli 2026
+    let age = targetDate.getFullYear() - tglLahir.getFullYear();
+    const m = targetDate.getMonth() - tglLahir.getMonth();
+    if (m < 0 || (m === 0 && targetDate.getDate() < tglLahir.getDate())) {
+        age--;
+    }
+    
+    if (age > maxUmur) {
+        showError("Maaf, usia Anda melebihi batas maksimal (" + maxUmur + " tahun) sesuai ketentuan PPDB.");
+        e.preventDefault();
+        return;
+    }
+    
+    if (age < 12) {
+        showError("Maaf, usia Anda belum mencukupi (minimal 12 tahun).");
+        e.preventDefault();
+        return;
+    }
+
+
+    const tglKK = new Date(document.getElementsByName('tgl_kk')[0].value);
+    const now = new Date();
+    let kkAge = now.getFullYear() - tglKK.getFullYear();
+    const mKK = now.getMonth() - tglKK.getMonth();
+    if (mKK < 0 || (mKK === 0 && now.getDate() < tglKK.getDate())) {
+        kkAge--;
+    }
+    
+    const hasDomisili = document.getElementsByName('file_domisili')[0].files.length > 0;
+
+    if (kkAge < 1 && !hasDomisili) {
+        showError("Kartu Keluarga harus diterbitkan minimal 1 tahun sebelum pendaftaran. Jika kurang dari 1 tahun, wajib mengunggah Surat Keterangan Domisili.");
+        e.preventDefault();
+        return;
+    }
+});
+
+function showError(msg) {
+    const errDiv = document.getElementById('js-error');
+    const errMsg = document.getElementById('js-error-msg');
+    errMsg.innerText = msg;
+    errDiv.classList.remove('d-none');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Real-time age validation
+const MIN_AGE = 12;
+const MAX_AGE = 15; // Maksimal usia per 1 Juli 2026
+
+function checkAge() {
+    const tglLahirInput = document.getElementById('tanggal_lahir');
+    const ageWarning = document.getElementById('ageWarning');
+    const ageWarningText = document.getElementById('ageWarningText');
+    const ageInfo = document.getElementById('ageInfo');
+    const ageDisplay = document.getElementById('ageDisplay');
+    
+    if (!tglLahirInput.value) {
+        ageWarning.classList.add('d-none');
+        ageInfo.classList.add('d-none');
+        return;
+    }
+    
+    const tglLahir = new Date(tglLahirInput.value);
+    const targetDate = new Date('2026-07-01'); // Per 1 Juli 2026
+    
+    let years = targetDate.getFullYear() - tglLahir.getFullYear();
+    let months = targetDate.getMonth() - tglLahir.getMonth();
+    if (months < 0) { years--; months += 12; }
+    
+    const ageText = years + ' tahun ' + months + ' bulan';
+    ageDisplay.textContent = ageText;
+    ageInfo.classList.remove('d-none');
+    
+    if (years < MIN_AGE) {
+        ageWarning.classList.remove('d-none', 'alert-warning');
+        ageWarning.classList.add('alert-danger');
+        ageWarningText.innerHTML = '<strong>Usia Kurang!</strong> Minimal ' + MIN_AGE + ' tahun. Usia: ' + ageText;
+        tglLahirInput.classList.add('is-invalid');
+    } else if (years > MAX_AGE) {
+        ageWarning.classList.remove('d-none', 'alert-warning');
+        ageWarning.classList.add('alert-danger');
+        ageWarningText.innerHTML = '<strong>Usia Melebihi Batas!</strong> Maksimal ' + MAX_AGE + ' tahun. Usia: ' + ageText;
+        tglLahirInput.classList.add('is-invalid');
+    } else {
+        ageWarning.classList.add('d-none');
+        tglLahirInput.classList.remove('is-invalid');
+        tglLahirInput.classList.add('is-valid');
+    }
+}
 </script>
+
 </body>
 </html>

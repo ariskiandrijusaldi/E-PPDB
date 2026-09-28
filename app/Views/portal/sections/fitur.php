@@ -1,86 +1,130 @@
-<!-- Fitur Utama -->
-<section class="py-5 bg-gov-light">
-    <div class="container text-center py-4">
-        <div class="section-title-wrapper">
-            <h1 class="fw-bold">Fitur Utama PPDB SMA</h1>
+<!-- Fitur Utama - 3 Pilar Informasi -->
+<section class="section" style="background: var(--surface-bg);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge badge-primary mb-3">
+                <i class="bi bi-stars me-1"></i>Layanan Utama
+            </span>
+            <h2 class="fw-bold mb-3">Apa yang Bisa Kamu Lakukan?</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;">
+                Tiga fitur utama untuk membantu perjalanan pendaftaranmu
+            </p>
         </div>
-        <p class="text-muted mb-5 mx-auto" style="max-width: 700px;">
-            Portal terintegrasi untuk pendaftaran, pemetaan, hingga pengumuman hasil seleksi PPDB secara transparan.
-        </p>
-        
+
         <div class="row g-4 justify-content-center">
-            <!-- Fitur 1: Jalur Pendaftaran -->
-            <div class="col-md-4 col-lg-4">
-                <a href="<?php echo url('persyaratan'); ?>" class="text-decoration-none">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-success bg-opacity-10 mx-auto">
-                            <i class="bi bi-signpost-split fs-3 text-success"></i>
+            <!-- Pilar 1: Alur Pendaftaran -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card feature-card h-100 border-0">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mx-auto">
+                            <i class="bi bi-signpost-split-fill"></i>
                         </div>
-                        <h6 class="fw-bold mb-2 text-dark">Jalur Pendaftaran</h6>
-                        <p class="small text-muted mb-0">Zonasi, Afirmasi, Prestasi & Mutasi orang tua.</p>
+                        <h4 class="feature-title">Alur Pendaftaran</h4>
+                        <p class="feature-desc mb-4">
+                            Panduan lengkap dari awal hingga akhir. Ikuti langkah-langkahnya dengan mudah.
+                        </p>
+                        <button type="button" class="btn btn-sm btn-primary px-4" data-bs-toggle="modal" data-bs-target="#flowModal">
+                            <i class="bi bi-arrow-right me-1"></i>Lihat Panduan
+                        </button>
                     </div>
-                </a>
-            </div>
-            <!-- Fitur 3 -->
-            <div class="col-md-4 col-lg-4">
-                <a href="#searchSection" class="text-decoration-none" onclick="smoothScrollTo('searchSection'); return false;">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-warning bg-opacity-10 mx-auto">
-                            <i class="bi bi-map fs-3 text-warning"></i>
-                        </div>
-                        <h6 class="fw-bold mb-2 text-dark">Pemetaan Zonasi</h6>
-                        <p class="small text-muted mb-0">Penghitungan jarak otomatis (Zonasi GPS).</p>
-                    </div>
-                </a>
-            </div>
-            <!-- Fitur 4 -->
-            <div class="col-md-4 col-lg-4">
-                <a href="<?php echo url('dashboard'); ?>" class="text-decoration-none">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-info bg-opacity-10 mx-auto">
-                            <i class="bi bi-file-earmark-arrow-up fs-3 text-info"></i>
-                        </div>
-                        <h6 class="fw-bold mb-2 text-dark">Unggah Dokumen</h6>
-                        <p class="small text-muted mb-0">Verifikasi berkas (KK, Rapor, Akta) secara online.</p>
-                    </div>
-                </a>
-            </div>
-            <!-- Fitur 5 -->
-            <div class="col-md-4 col-lg-4">
-                <a href="<?php echo url('monitoring'); ?>" class="text-decoration-none">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-danger bg-opacity-10 mx-auto">
-                            <i class="bi bi-graph-up-arrow fs-3 text-danger"></i>
-                        </div>
-                        <h6 class="fw-bold mb-2 text-dark">Update Real-time</h6>
-                        <p class="small text-muted mb-0">Pantau posisi peringkat & hasil seleksi.</p>
-                    </div>
-                </a>
-            </div>
-            <!-- Fitur 6 -->
-            <div class="col-md-4 col-lg-4">
-                <a href="<?php echo url('cetak/pendaftaran'); ?>" class="text-decoration-none">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-dark bg-opacity-10 mx-auto">
-                            <i class="bi bi-printer fs-3 text-dark"></i>
-                        </div>
-                        <h6 class="fw-bold mb-2 text-dark">Cetak Bukti</h6>
-                        <p class="small text-muted mb-0">Cetak bukti daftar, diterima, & daftar ulang.</p>
-                    </div>
-                </a>
+                </div>
             </div>
 
-            <!-- Fitur 8 -->
-            <div class="col-md-4 col-lg-4">
-                <a href="<?php echo url('jadwal'); ?>" class="text-decoration-none">
-                    <div class="card feature-card p-4 text-center shadow-sm">
-                        <div class="feature-icon-wrapper bg-secondary bg-opacity-10 mx-auto">
-                            <i class="bi bi-calendar-event fs-3 text-secondary"></i>
+            <!-- Pilar 2: Cek Status -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card feature-card h-100 border-0">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mx-auto" style="background: var(--accent-emerald-light); color: var(--accent-emerald);">
+                            <i class="bi bi-search"></i>
                         </div>
-                        <h6 class="fw-bold mb-2 text-dark">Jadwal PPDB</h6>
-                        <p class="small text-muted mb-0">Timeline pendaftaran hingga daftar ulang.</p>
+                        <h4 class="feature-title">Cek Status</h4>
+                        <p class="feature-desc mb-4">
+                            Lihat status pendaftaran dan hasil seleksi. Transparan dan real-time.
+                        </p>
+                        <a href="<?php echo url('/pengumuman'); ?>" class="btn btn-sm btn-success px-4">
+                            <i class="bi bi-search me-1"></i>Cek Sekarang
+                        </a>
                     </div>
-                </a>
+                </div>
+            </div>
+
+            <!-- Pilar 3: Bantuan -->
+            <div class="col-md-6 col-lg-4">
+                <div class="bento-card h-100 p-4 border-0">
+                    <div class="text-center">
+                        <div class="feature-icon mx-auto mb-3" style="background: var(--accent-orange-light); color: var(--accent-orange);">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h4 class="feature-title fw-bold">Butuh Bantuan?</h4>
+                        <p class="text-muted small mb-4">
+                            Tim kami siap membantu. Hubungi helpdesk untuk pertanyaan apapun.
+                        </p>
+                        <?php 
+                        // Dynamic Helpdesk Number with cleaning
+                        $waNum = preg_replace('/[^0-9]/', '', $wa_helpdesk ?? '6285147985180');
+                        if (substr($waNum, 0, 1) === '0') $waNum = '62' . substr($waNum, 1);
+                        ?>
+                        <a href="https://wa.me/<?php echo $waNum; ?>?text=Halo,%20saya%20butuh%20bantuan%20terkait%20PPDB%20SMA." target="_blank" class="btn btn-primary rounded-pill px-4 w-100">
+                            <i class="bi bi-whatsapp me-2"></i>Hubungi Helpdesk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Info Cards -->
+        <div class="row g-3 mt-5">
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="bg-primary-subtle rounded-3 p-2 me-3">
+                            <i class="bi bi-calendar-check text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Pendaftaran</small>
+                            <span class="fw-bold text-primary">Dibuka</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="bg-primary-subtle rounded-3 p-2 me-3">
+                            <i class="bi bi-clock text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Durasi</small>
+                            <span class="fw-bold">30 Hari</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="bg-primary-subtle rounded-3 p-2 me-3">
+                            <i class="bi bi-cash-coin text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Biaya</small>
+                            <span class="fw-bold text-success">GRATIS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="bg-primary-subtle rounded-3 p-2 me-3">
+                            <i class="bi bi-phone text-primary fs-5"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block">Akses</small>
+                            <span class="fw-bold">HP/Laptop</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

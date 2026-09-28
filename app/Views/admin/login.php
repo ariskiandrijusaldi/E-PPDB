@@ -123,13 +123,19 @@
 </head>
 <body>
 
+    <?php 
+    $isSchoolLogin = (strpos($_SERVER['REQUEST_URI'], '/admin/sekolah/login') !== false);
+    $loginTitle = $isSchoolLogin ? 'Login Admin Sekolah' : 'Administrator Panel';
+    $loginSubtitle = $isSchoolLogin ? 'Masuk sebagai operator sekolah' : 'Masuk untuk mengelola sistem PPDB';
+    ?>
+
     <div class="login-card">
         <!-- Logo -->
         <img src="<?php echo asset('images/logo_kemdikbud.png'); ?>" alt="Logo" class="logo-img">
         
         <!-- Header -->
-        <h1 class="page-title">Administrator Panel</h1>
-        <p class="page-subtitle">Masuk untuk mengelola sistem PPDB</p>
+        <h1 class="page-title"><?php echo $loginTitle; ?></h1>
+        <p class="page-subtitle"><?php echo $loginSubtitle; ?></p>
 
         <!-- Alerts -->
         <?php if (isset($_SESSION['error'])): ?>
@@ -139,7 +145,7 @@
         <?php endif; ?>
 
         <!-- Form -->
-        <form action="<?php echo url('/admin/login'); ?>" method="POST">
+        <form action="<?php echo $isSchoolLogin ? url('/admin/sekolah/login') : url('/admin/login'); ?>" method="POST">
             <?php echo csrf_field(); ?>
             
             <input type="text" 
@@ -162,10 +168,23 @@
         <!-- Divider -->
         <div class="divider"></div>
 
-        <!-- Back Link -->
-        <a href="<?php echo url('/'); ?>" class="back-link">
-            <i class="bi bi-arrow-left"></i> Kembali ke Halaman Utama
-        </a>
+        <div class="d-flex flex-column gap-3">
+            <!-- Switch Admin Link -->
+            <?php if ($isSchoolLogin): ?>
+                <a href="<?php echo url('/admin/login'); ?>" class="back-link justify-content-center text-primary">
+                    Login sebagai Super Admin
+                </a>
+            <?php else: ?>
+                <a href="<?php echo url('/admin/sekolah/login'); ?>" class="back-link justify-content-center text-primary">
+                    Login sebagai Admin Sekolah
+                </a>
+            <?php endif; ?>
+
+            <!-- Back Link -->
+            <a href="<?php echo url('/'); ?>" class="back-link justify-content-center">
+                <i class="bi bi-arrow-left"></i> Kembali ke Halaman Utama
+            </a>
+        </div>
     </div>
 
 </body>

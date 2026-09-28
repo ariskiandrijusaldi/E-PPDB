@@ -5,7 +5,8 @@
             <div class="col-lg-8 text-center mt-5 mt-lg-0">
                 <h2 class="fw-bold text-dark">Informasi & Persyaratan</h2>
                 <div class="bg-primary mx-auto mb-3" style="width: 60px; height: 4px; border-radius: 2px;"></div>
-                <p class="text-muted">Pastikan Anda memahami seluruh persyaratan pendaftaran PPDB SMA tahun berjalan</p>
+                <p class="text-muted">Pastikan Anda memahami seluruh persyaratan pendaftaran PPDB SMP tahun berjalan</p>
+
             </div>
         </div>
 
@@ -25,8 +26,9 @@
                         </div>
                         <div>
                             <strong>Usia Maksimal</strong>
-                            <p class="text-muted mb-0 small">21 tahun per 1 Juli (dibuktikan akta kelahiran/surat lahir).</p>
+                            <p class="text-muted mb-0 small">15 tahun per 1 Juli 2026 (dibuktikan akta kelahiran/surat lahir).</p>
                         </div>
+
                     </div>
                     
                     <!-- Item 2: Pendidikan -->
@@ -36,8 +38,9 @@
                         </div>
                         <div>
                             <strong>Pendidikan</strong>
-                            <p class="text-muted mb-0 small">Lulus SMP/MTs (dibuktikan dengan ijazah atau SKL).</p>
+                            <p class="text-muted mb-0 small">Lulus SD/MI/Sederajat (dibuktikan dengan ijazah atau SKL).</p>
                         </div>
+
                     </div>
                     
                     <!-- Item 3: Tahun Lulus -->

@@ -27,3 +27,10 @@ define('KUOTA_ZONASI_PERSEN', 50);
 define('KUOTA_AFIRMASI_PERSEN', 15);
 define('KUOTA_PRESTASI_PERSEN', 30);
 define('KUOTA_MUTASI_PERSEN', 5);
+
+// Validasi
+define('MAX_UMUR', 15); // SMP: Maksimal 15 Tahun
+define('MIN_UMUR', 12); // SMP: Minimal 12 Tahun
+
+// Contact Info
+define('WA_ADMIN', '6281234567890'); // Ganti dengan nomor admin yang sesuai

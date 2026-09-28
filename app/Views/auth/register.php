@@ -116,6 +116,22 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Password Toggle Style */
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 10;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .password-toggle:hover { color: var(--primary-color); }
     </style>
 </head>
 <body>
@@ -141,37 +157,49 @@
                     </div>
                     <?php endif; ?>
                     
-                    <form action="<?php echo url('/register'); ?>" method="POST">
+                    <form action="<?php echo url('/register'); ?>" method="POST" autocomplete="off" id="registerForm">
                         <?php echo csrf_field(); ?>
+                        
+                        <!-- Hack to prevent Chrome valid autofill -->
+                        <input type="text" style="display:none" autocomplete="false" name="fakeusernameremembered">
+                        <input type="password" style="display:none" autocomplete="false" name="fakepasswordremembered">
                         
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="nisn" id="nisn" placeholder="NISN" required maxlength="10">
+                                    <input type="text" class="form-control" name="nisn" id="nisn" placeholder="NISN" required maxlength="10" autocomplete="off" inputmode="numeric" data-validate="nisn">
                                     <label for="nisn">NISN (10 Digit)</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="nik" id="nik" placeholder="NIK" required maxlength="16">
+                                    <input type="text" class="form-control" name="nik" id="nik" placeholder="NIK" required maxlength="16" autocomplete="off" inputmode="numeric" data-validate="nik">
                                     <label for="nik">NIK (16 Digit)</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Lengkap" required>
+                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Lengkap" required autocomplete="off" minlength="3">
                             <label for="nama">Nama Lengkap Sesuai Ijazah</label>
                         </div>
 
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required minlength="6">
-                            <label for="password">Password (Min. 6 Karakter)</label>
+                        <div class="form-floating mb-4 position-relative">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required minlength="8" autocomplete="new-password" style="padding-right: 50px;" data-validate="password">
+                            <label for="password">Password (Min. 8 Karakter)</label>
+                            <button type="button" class="password-toggle" onclick="toggleRegisterPassword()" aria-label="Lihat Password">
+                                <i class="bi bi-eye" id="toggleIconReg"></i>
+                            </button>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mb-4 shadow-lg">
-                            Daftar Sekarang <i class="bi bi-person-plus-fill ms-2"></i>
-                        </button>
+                        <div class="d-flex gap-2 mb-4">
+                            <button type="submit" class="btn btn-primary flex-grow-1 shadow-lg">
+                                Daftar Sekarang <i class="bi bi-person-plus-fill ms-2"></i>
+                            </button>
+                            <button type="reset" class="btn btn-light bg-light border" title="Bersihkan Form" style="width: 50px;">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
 
                         <div class="text-center links">
                             <p class="mb-2 text-muted small">
@@ -187,5 +215,25 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo asset('js/form-validator.js'); ?>"></script>
+    <script>
+        function toggleRegisterPassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIconReg');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
+    <!-- Closed Modal -->
+    <?php view('portal.partials.closed_modal'); ?>
 </body>
 </html>
+

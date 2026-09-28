@@ -5,10 +5,15 @@
 ?>
 
 <!-- Hero Section -->
-<?php view('portal.sections.hero', ['stats' => $stats ?? [], 'sekolah_list' => $sekolah_list ?? []]); ?>
+<?php view('portal.sections.hero', [
+    'stats' => $stats ?? [], 
+    'sekolah_list' => $sekolah_list ?? [],
+    'is_registration_open' => $is_registration_open ?? false,
+    'pendaftaran_jadwal' => $pendaftaran_jadwal ?? []
+]); ?>
 
 <!-- Mekanisme Pendaftaran -->
-<?php view('portal.sections.mekanisme'); ?>
+<?php view('portal.sections.mekanisme', ['stats' => $stats ?? []]); ?>
 
 <!-- Fitur Utama -->
 <?php view('portal.sections.fitur'); ?>
@@ -22,6 +27,9 @@
 <!-- Section Direktori Sekolah -->
 <?php view('portal.sections.directory', ['sekolah_list' => $sekolah_list ?? []]); ?>
 
+<!-- Registration Flow Modal -->
+<?php view('portal.partials.flow_modal'); ?>
+
 <!-- Additional Styles for placeholders -->
 <style>
     .placeholder-white::placeholder { color: rgba(255,255,255,0.7) !important; }
@@ -32,3 +40,4 @@
 <script>
     window.sekolahData = <?php echo json_encode($sekolah_list ?? []); ?>;
 </script>
+

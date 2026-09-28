@@ -46,6 +46,10 @@ class AuthController {
 
     // Show register page
     public function showRegister() {
+        if (isRegistrationClosed()) {
+            return view('auth.register_closed');
+        }
+
         if (isLoggedIn()) {
             redirect('/dashboard');
         }
@@ -56,6 +60,10 @@ class AuthController {
 
     // Process registration
     public function register() {
+        if (isRegistrationClosed()) {
+            return view('auth.register_closed');
+        }
+
         $data = [
             'nisn' => $_POST['nisn'] ?? '',
             'nik' => $_POST['nik'] ?? '',

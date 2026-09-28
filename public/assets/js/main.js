@@ -1,5 +1,5 @@
 import { state } from './modules/state.js';
-import { initMap } from './modules/map.js';
+import { initMap, searchAndNavigate } from './modules/map.js';
 import { selectSchool } from './modules/ui.js';
 import { filterSchools, clearSchoolSearch, resetAllFilters, showSchoolSuggestions, hideSchoolSuggestions, selectSchoolFromSuggestion } from './modules/search.js';
 import { getCurrentLocation } from './modules/location.js';
@@ -12,6 +12,7 @@ window.resetAllFilters = resetAllFilters;
 window.getCurrentLocation = getCurrentLocation;
 window.selectSchoolFromSuggestion = selectSchoolFromSuggestion;
 window.resetDirectoryFilters = resetDirectoryFilters;
+window.searchAndNavigate = searchAndNavigate; // Expose for search-to-location
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function () {
@@ -36,6 +37,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 hideSchoolSuggestions();
             }
             filterSchools();
+        });
+
+        // Add Enter key handler for search-to-location navigation
+        searchSchoolInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const keyword = e.target.value.trim();
+                if (keyword.length >= 2) {
+                    hideSchoolSuggestions();
+                    searchAndNavigate(keyword);
+                }
+            }
         });
     }
 

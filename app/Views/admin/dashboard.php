@@ -1,245 +1,227 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - <?php echo APP_NAME; ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        :root {
-            --sidebar-width: 260px;
-            --primary-color: #4F46E5;
-            --secondary-bg: #f3f4f6;
-        }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--secondary-bg); overflow-x: hidden; }
-        
-        /* Sidebar Styling */
-        #sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            position: fixed;
-            top: 0; left: 0;
-            background: #ffffff;
-            border-right: 1px solid rgba(0,0,0,0.05);
-            z-index: 1000;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            margin-bottom: 30px;
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 1.25rem;
-            text-decoration: none;
-        }
-        .nav-link {
-            color: #64748b;
-            padding: 12px 15px;
-            border-radius: 10px;
-            font-weight: 500;
-            margin-bottom: 5px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-        }
-        .nav-link i { font-size: 1.25rem; margin-right: 12px; }
-        .nav-link:hover { color: var(--primary-color); background: rgba(79, 70, 229, 0.05); }
-        .nav-link.active { color: #fff; background: var(--primary-color); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        
-        /* Main Content */
-        #main-content {
-            margin-left: var(--sidebar-width);
-            padding: 30px;
-            min-height: 100vh;
-        }
-        
-        /* Cards */
-        .stat-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 25px;
-            border: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-3px); }
-        .icon-box {
-            width: 50px; height: 50px;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        /* Navbar */
-        .top-navbar {
-            margin-bottom: 30px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        
-        @media (max-width: 768px) {
-            #sidebar { transform: translateX(-100%); }
-            #main-content { margin-left: 0; }
-        }
-    </style>
-</head>
-<body>
+<?php 
+$title = 'Dashboard';
+include ROOT_PATH . 'app/Views/admin/layouts/header.php'; 
+?>
 
-    <!-- Sidebar -->
-    <nav id="sidebar">
-        <a href="#" class="sidebar-brand">
-            <i class="bi bi-hexagon-fill me-2"></i> Admin Panel
-        </a>
-        
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="<?php echo url('/admin'); ?>">
-                    <i class="bi bi-grid"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <span class="text-uppercase small text-muted fw-bold px-3 mt-4 mb-2 d-block">Master Data</span>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo url('/admin/sekolah'); ?>">
-                    <i class="bi bi-building"></i> Data Sekolah
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bi bi-people"></i> Pendaftar
-                </a>
-            </li>
-            <li class="nav-item">
-                <span class="text-uppercase small text-muted fw-bold px-3 mt-4 mb-2 d-block">Pengaturan</span>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bi bi-gear"></i> Konfigurasi
-                </a>
-            </li>
-            <li class="nav-item mt-auto">
-                <a class="nav-link text-danger mt-5" href="<?php echo url('/logout'); ?>">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </a>
-            </li>
-        </ul>
-    </nav>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1 text-primary">Kemajuan PPDB 2025/2026</h4>
+        <p class="text-muted small mb-0">Selamat datang kembali, <strong><?php echo htmlspecialchars($_SESSION['admin_name']); ?></strong>.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-white shadow-sm btn-sm px-3 rounded-pill border" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh Data
+        </button>
+        <div class="bg-white px-3 py-1 rounded-pill shadow-sm border small d-flex align-items-center">
+            <span class="pulse-green me-2"></span> <?php echo date('H:i'); ?> WIB
+        </div>
+    </div>
+</div>
 
-    <!-- Main Content -->
-    <main id="main-content">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <div>
-                <h4 class="fw-bold mb-1">Selamat Datang, <?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Administrator'); ?> 👋</h4>
-                <p class="text-muted small mb-0">Ini adalah ringkasan data PPDB hari ini.</p>
+<!-- Bento Grid Layout -->
+<div class="bento-grid mb-4">
+    <!-- Main Stats Card (Bento Large) -->
+    <div class="bento-item bento-2x2 bg-primary text-white p-4 d-flex flex-column justify-content-between position-relative overflow-hidden">
+        <div class="position-absolute end-0 top-0 p-4 opacity-10">
+            <i class="bi bi-people-fill" style="font-size: 10rem; transform: rotate(-15deg);"></i>
+        </div>
+        <div class="position-relative z-1">
+            <h6 class="text-uppercase small fw-bold opacity-75 mb-4">Total Calon Siswa Terdaftar</h6>
+            <h1 class="display-3 fw-bold mb-0"><?php echo number_format($total_pendaftar ?? 0); ?></h1>
+            <p class="mb-0 opacity-75 mt-2">Pendaftar Tersebar di Seluruh Jalur</p>
+        </div>
+        <div class="position-relative z-1 mt-4">
+            <div class="d-flex justify-content-between small mb-2 opacity-75">
+                <span>Progres Verifikasi</span>
+                <span><?php echo ($total_pendaftar > 0) ? round(($verified_fisik / $total_pendaftar) * 100) : 0; ?>%</span>
             </div>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-white bg-white border shadow-sm dropdown-toggle rounded-pill px-3 py-2" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-2 text-secondary"></i> Account
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="<?php echo url('/logout'); ?>">Logout</a></li>
-                    </ul>
-                </div>
+            <div class="progress bg-white bg-opacity-20" style="height: 8px; border-radius: 10px;">
+                <div class="progress-bar bg-white" style="width: <?php echo ($total_pendaftar > 0) ? ($verified_fisik / $total_pendaftar) * 100 : 0; ?>%; border-radius: 10px;"></div>
             </div>
         </div>
+    </div>
 
-        <!-- Stats Grid -->
-        <div class="row g-4 mb-5">
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted small mb-1 fw-semibold text-uppercase">Total Sekolah</p>
-                            <h3 class="fw-bold mb-0 text-dark"><?php echo $total_sekolah ?? 0; ?></h3>
-                        </div>
-                        <div class="icon-box bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-building"></i>
-                        </div>
-                    </div>
-                </div>
+    <!-- Stats Small: Pending (Bento Small) -->
+    <div class="bento-item bg-white p-4 d-flex flex-column justify-content-between border shadow-sm">
+        <div>
+            <div class="stats-icon-wrapper bg-warning bg-opacity-10 text-warning mb-3">
+                <i class="bi bi-clock-history"></i>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted small mb-1 fw-semibold text-uppercase">Total Pendaftar</p>
-                            <h3 class="fw-bold mb-0 text-dark"><?php echo $total_pendaftar ?? 0; ?></h3>
-                        </div>
-                        <div class="icon-box bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-people"></i>
-                        </div>
-                    </div>
-                </div>
+            <h6 class="text-muted small fw-bold text-uppercase mb-1">Verifikasi Berkas</h6>
+            <h3 class="fw-bold mb-0 text-dark"><?php echo number_format($pending_verifikasi ?? 0); ?></h3>
+        </div>
+        <div class="mt-3">
+            <a href="<?php echo url('/admin/verifikasi'); ?>" class="text-primary small fw-bold text-decoration-none">
+                Cek Sekarang <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Small: Sisa Kuota (Bento Small) -->
+    <div class="bento-item bg-white p-4 d-flex flex-column justify-content-between border shadow-sm">
+        <div>
+            <div class="stats-icon-wrapper bg-success bg-opacity-10 text-success mb-3">
+                <i class="bi bi-pie-chart-fill"></i>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted small mb-1 fw-semibold text-uppercase">Menunggu Verifikasi</p>
-                            <h3 class="fw-bold mb-0 text-dark"><?php echo $pendaftar_pending ?? 0; ?></h3>
-                        </div>
-                        <div class="icon-box bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                    </div>
-                </div>
+            <h6 class="text-muted small fw-bold text-uppercase mb-1">Total Sisa Kuota</h6>
+            <h3 class="fw-bold mb-0 text-dark"><?php echo number_format($sisa_kuota ?? 0); ?></h3>
+        </div>
+        <div class="mt-3">
+            <div class="small text-muted">Kursi tersedia secara global</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions (Bento Wide) - Super Admin Only -->
+    <?php if ($_SESSION['admin_role'] === 'super_admin'): ?>
+    <div class="bento-item bento-wide bg-white p-4 border shadow-sm">
+        <h6 class="text-muted small fw-bold text-uppercase mb-3">Aksi Cepat</h6>
+        <div class="row g-3">
+            <div class="col-6">
+                <a href="<?php echo url('/admin/sekolah/tambah'); ?>" class="btn btn-primary-subtle text-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-2 border border-primary border-opacity-10">
+                    <i class="bi bi-building-add fs-4"></i>
+                    <span class="small fw-bold">Input Sekolah</span>
+                </a>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <p class="text-muted small mb-1 fw-semibold text-uppercase">Diterima</p>
-                            <h3 class="fw-bold mb-0 text-dark"><?php echo $pendaftar_diterima ?? 0; ?></h3>
-                        </div>
-                        <div class="icon-box bg-info bg-opacity-10 text-info">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-6">
+                <a href="<?php echo url('/admin/seleksi/proses'); ?>" class="btn btn-danger-subtle text-danger w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-2 border border-danger border-opacity-10">
+                    <i class="bi bi-lightning-charge-fill fs-4"></i>
+                    <span class="small fw-bold">Jalankan Seleksi</span>
+                </a>
             </div>
         </div>
+    </div>
+    <?php endif; ?>
+</div>
 
-        <!-- Recent Activity Table Placeholder -->
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            <div class="card-header bg-white p-4 border-0 pb-0">
-                <h6 class="fw-bold">Pendaftar Terbaru</h6>
+<div class="row g-4">
+    <!-- Pendaftar Terbaru (Bento Extended) -->
+    <div class="<?php echo ($_SESSION['admin_role'] === 'super_admin') ? 'col-lg-8' : 'col-lg-12'; ?>">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-bottom py-4 px-4 d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0">Pendaftar Terkini</h6>
+                <a href="<?php echo url('/admin/pendaftar'); ?>" class="btn btn-sm btn-link text-primary fw-bold text-decoration-none p-0">
+                    Review Semua <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0" style="min-width: 600px;">
-                        <thead class="bg-light">
-                            <tr>
-                                <th class="px-4 py-3 text-secondary small text-uppercase">Nama Siswa</th>
-                                <th class="px-4 py-3 text-secondary small text-uppercase">NISN</th>
-                                <th class="px-4 py-3 text-secondary small text-uppercase">Jalur</th>
-                                <th class="px-4 py-3 text-secondary small text-uppercase">Tanggal</th>
-                                <th class="px-4 py-3 text-secondary small text-uppercase">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">
-                                    <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
-                                    Belum ada data pendaftaran terbaru
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light bg-opacity-50">
+                        <tr>
+                            <th class="ps-4 py-3 small text-muted text-uppercase fw-bold">Siswa</th>
+                            <th class="py-3 small text-muted text-uppercase fw-bold">Jalur</th>
+                            <th class="py-3 small text-muted text-uppercase fw-bold">Waktu</th>
+                            <th class="pe-4 py-3 small text-muted text-uppercase fw-bold text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($latest_pendaftar as $p): ?>
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center py-2">
+                                    <div class="profile-avatar me-3" style="width: 38px; height: 38px; font-size: 0.9rem; background-color: var(--primary);">
+                                        <?php echo substr($p['nama_siswa'], 0, 1); ?>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small"><?php echo e($p['nama_siswa']); ?></div>
+                                        <div class="text-muted" style="font-size: 0.7rem;">NISN: <?php echo e($p['nisn']); ?></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill small fw-semibold" style="background-color: rgba(0, 82, 204, 0.1); color: #0052CC; border: 1px solid rgba(0, 82, 204, 0.2); padding: 5px 12px;">
+                                    <?php echo ucfirst($p['jalur']); ?>
+                                </span>
+                            </td>
+                            <td class="text-muted small">
+                                <?php echo date('H:i', strtotime($p['tanggal_daftar'])); ?> <span class="opacity-50">WIB</span>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <?php 
+                                $status = strtolower($p['status'] ?? 'pending');
+                                $statusLabel = str_replace('_', ' ', $status);
+                                $colorMap = [
+                                    'pending'        => ['bg' => '#FFFBEB', 'text' => '#B45309', 'border' => '#FEF3C7'],
+                                    'ditolak'        => ['bg' => '#FEF2F2', 'text' => '#B91C1C', 'border' => '#FEE2E2'],
+                                    'tidak_diterima' => ['bg' => '#F1F5F9', 'text' => '#475569', 'border' => '#E2E8F0'],
+                                    'diterima'       => ['bg' => '#F0FDF4', 'text' => '#15803D', 'border' => '#DCFCE7'],
+                                    'terverifikasi'  => ['bg' => '#EFF6FF', 'text' => '#1D4ED8', 'border' => '#DBEAFE']
+                                ];
+                                $c = $colorMap[$status] ?? ['bg' => '#F8FAFC', 'text' => '#64748B', 'border' => '#E2E8F0'];
+                                ?>
+                                <span class="badge rounded-pill small fw-bold" style="background-color: <?php echo $c['bg']; ?>; color: <?php echo $c['text']; ?>; border: 1px solid <?php echo $c['border']; ?>; padding: 5px 15px;">
+                                    <?php echo ucwords($statusLabel); ?>
+                                </span>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
-    </main>
+    <!-- Status Server & Audit - Super Admin Only -->
+    <?php if ($_SESSION['admin_role'] === 'super_admin'): ?>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 bg-dark text-white overflow-hidden">
+            <div class="card-body p-4 position-relative">
+                <i class="bi bi-shield-lock-fill position-absolute end-0 bottom-0 opacity-10 mb-n4 me-n2" style="font-size: 6rem;"></i>
+                <h6 class="fw-bold text-uppercase small opacity-50 mb-3">Keamanan</h6>
+                <p class="small mb-4">Sistem PPDB Sumbar menggunakan enkripsi standar industri untuk melindungi data personal siswa.</p>
+                <a href="<?php echo url('/admin/logs'); ?>" class="btn btn-outline-light btn-sm rounded-pill px-4 fw-bold">
+                    Audit Log
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<style>
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem;
+    height: 480px;
+}
+.bento-item {
+    border-radius: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bento-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+.bento-2x2 {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+.bento-wide {
+    grid-column: span 2;
+}
+@media (max-width: 992px) {
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+}
+.pulse-green {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+</style>
+
+<?php include ROOT_PATH . 'app/Views/admin/layouts/footer.php'; ?>
+

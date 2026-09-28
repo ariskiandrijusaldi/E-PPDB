@@ -73,3 +73,58 @@ export function displaySchoolsOnMap(schools = null) {
         state.map.fitBounds(bounds, { padding: [50, 50] });
     }
 }
+
+// Pan map to a specific school by ID or name search
+export function panToSchool(searchTerm) {
+    if (!state.map || !window.sekolahData) return null;
+
+    // Find school by name (partial match, case-insensitive)
+    const school = window.sekolahData.find(s =>
+        s.nama.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (school) {
+        // Pan and zoom to the school location
+        state.map.setView([school.latitude, school.longitude], 16, {
+            animate: true,
+            duration: 1
+        });
+
+        // Open the popup for this school
+        const marker = state.schoolMarkers.find(m => m.schoolId == school.id);
+        if (marker) {
+            marker.openPopup();
+        }
+
+        return school;
+    }
+
+    return null;
+}
+
+// Search schools and update map
+export function searchAndNavigate(searchTerm) {
+    if (!searchTerm || searchTerm.length < 2) return;
+
+    // Filter schools matching search term
+    const matchingSchools = window.sekolahData.filter(s =>
+        s.nama.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (matchingSchools.length === 1) {
+        // Single match - pan directly to school
+        panToSchool(searchTerm);
+    } else if (matchingSchools.length > 1) {
+        // Multiple matches - fit bounds to show all
+        displaySchoolsOnMap(matchingSchools);
+
+        // Also pan to first match and open popup
+        const firstSchool = matchingSchools[0];
+        state.map.setView([firstSchool.latitude, firstSchool.longitude], 14, {
+            animate: true,
+            duration: 1
+        });
+    }
+
+    return matchingSchools;
+}
